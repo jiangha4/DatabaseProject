@@ -1,7 +1,13 @@
 from flask import Flask, Blueprint
 from api.restplus import api
-from api.endpoints.routes import ns
+from api.endpoints.routes import ns, ns2
 import settings
+
+from statics.models.database import myDB
+USERNAME = "s19wdb18"
+PASSWORD = "w8$t5yquKu"
+DATABASE = "s19wdb18"
+HOSTNAME = "dbclass.cs.pdx.edu"
 
 app = Flask(__name__)
 
@@ -14,10 +20,16 @@ def configure(flask_app):
 
 def init_app(flask_app):
     configure(flask_app)
-
     blueprint = Blueprint('/', __name__)
+    #db = myDB(hostname=HOSTNAME,
+    #          username=USERNAME,
+    #          password=PASSWORD,
+    #          database=DATABASE)
+
     api.init_app(blueprint)
     api.add_namespace(ns)
+    #api.add_namespace(db)
+
     flask_app.register_blueprint(blueprint)
 
 def main():

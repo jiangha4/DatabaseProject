@@ -1,6 +1,6 @@
 from flask_restplus import Api
 
-api = Api(version='1.0', title='Student Overlord',
+api = Api(version='1.0', title='Big Brother',
                   description='A overhead view of student data. '
                               'A Database project')
 
