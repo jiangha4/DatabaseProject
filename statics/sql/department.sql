@@ -1,0 +1,16 @@
+insert into department (dept_code, dept_name, location) values ('1465', 'Law & Public Policy', '8224 Blackbird Lane');
+insert into department (dept_code, dept_name, location) values ('0078', 'Biology & Life Science', '14 Northwestern Avenue');
+insert into department (dept_code, dept_name, location) values ('6881', 'Psychology & Social Work', '9446 Warbler Terrace');
+insert into department (dept_code, dept_name, location) values ('4510', 'Physical Sciences', '267 Farragut Parkway');
+insert into department (dept_code, dept_name, location) values ('1681', 'Humanities & Liberal Arts', '80 Maryland Circle');
+insert into department (dept_code, dept_name, location) values ('3106', 'Arts', '98128 Duke Circle');
+insert into department (dept_code, dept_name, location) values ('2250', 'Social Science', '4 Pleasure Trail');
+insert into department (dept_code, dept_name, location) values ('1300', 'Health', '923 Monument Road');
+insert into department (dept_code, dept_name, location) values ('5294', 'Agriculture & Natural Resources', '1383 Mockingbird Plaza');
+insert into department (dept_code, dept_name, location) values ('1849', 'Interdisciplinary', '73 Grover Street');
+insert into department (dept_code, dept_name, location) values ('8946', 'Industrial Arts & Consumer Services', '0994 Sheridan Junction');
+insert into department (dept_code, dept_name, location) values ('4138', 'Engineering', '38648 High Crossing Place');
+insert into department (dept_code, dept_name, location) values ('6857', 'Education', '73 Kingsford Court');
+insert into department (dept_code, dept_name, location) values ('3448', 'Business', '5 Roth Road');
+insert into department (dept_code, dept_name, location) values ('3952', 'Computers & Mathematics', '222 Miller Center');
+insert into department (dept_code, dept_name, location) values ('0393', 'Communications & Journalism', '843 Meadow Ridge Way');
