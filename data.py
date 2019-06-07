@@ -1,13 +1,12 @@
 import csv
 import random
 import pandas as pd
-import datetime
-import itertools
 
 DEPT = dict()
 MAJOR = dict()
 STUDENT_ID = list()
 FACULTY_ID = list()
+
 
 def get_all_students():
     student_data = read_csv_file('./statics/data/students.csv')
@@ -28,6 +27,10 @@ def get_all_courses():
 def get_all_semester():
     sem_data = read_csv_file('./statics/data/semesters.csv')
     return list(zip(*sem_data))[0]
+
+def get_all_depts():
+    dept_data = read_csv_file(('./statics/data/department.csv'))
+    return list(zip(*dept_data))[1]
 
 def generate_semester_csv():
     datelist = pd.date_range(start='1/01/1950', end='1/10/2021', freq='4M').tolist()
@@ -51,12 +54,39 @@ def read_csv_file(name):
         return list(data)
 
 def generate_section_sql():
+    class_size = [30, 60, 120]
+    section_code = ['A', 'B', 'C', 'D']
     sem_data = get_all_semester()
     courses = list(get_all_courses())
-    section_id = list(itertools.chain(*read_csv_file('./statics/data/sections.csv')))
-    for sec in section_id:
-        pass
+    faculty_ids = list(get_all_faculity())
+    template = "insert into section (sect_code, seme_code,course_num, course_time, " \
+               "curr_enrollment, max_enrollment, wait_list, fac_num) values " \
+               "('%s','%s','%s','%s', %d, %d, %d, %d);\n"
+    with open("./statics/sql/section.sql", 'w+') as f:
+        for sem_id in sem_data:
+            for section_id in section_code:
+                for course in courses:
+                    if section_id == 'A':
+                        time = '9:00AM'
+                    elif section_id == 'B':
+                        time = '12:00PM'
+                    elif section_id == 'C':
+                        time = '3:00PM'
+                    elif section_id == 'D':
+                        time = '6:00PM'
 
+                    max_enrollment = random.choice(class_size)
+                    curr_enrollment = random.randint(0, max_enrollment)
+
+                    wait_list = 0
+                    if curr_enrollment == max_enrollment:
+                        wait_list = random.randint(1, 30)
+
+                    teacher = random.choice(faculty_ids)
+                    sql = template % (section_id, sem_id, course, time,
+                                      curr_enrollment, max_enrollment,
+                                      wait_list, int(teacher))
+                    f.write(sql)
 
 def generate_prereq_sql():
     courses = list(get_all_courses())
@@ -102,7 +132,7 @@ def generate_students_major_sql():
 def generate_advises_sql():
     students = list(get_all_students())
     fac = list(get_all_faculity())
-    template = "insert into advises (stu_dent,fac,num) values " \
+    template = "insert into student_advisors (stu_num, fac_num) values " \
                "(%d, %d);\n"
     with open('./statics/sql/advises.sql', 'w+') as f:
         for data in fac:
@@ -113,7 +143,7 @@ def generate_advises_sql():
                 index = random.sample(range(number_students), num_advise)
                 rm = []
                 for stu_index in index:
-                    sql = template % (int(data), int(students[stu_index]))
+                    sql = template % (int(students[stu_index]), int(data))
                     f.write(sql)
                     rm.append(students[stu_index])
                 for stu in rm:
@@ -139,7 +169,7 @@ def generate_students_sql():
 
 def generate_courses_sql():
     course_data = read_csv_file('./statics/data/courses.csv')
-    template = "insert into course (course_num,dept_code,title,credits) values " \
+    template = "insert into dept_course (course_num,dept_code,title,credits) values " \
                "('%s','%s','%s',%d);\n"
     with open('./statics/sql/courses.sql', 'w+') as f:
         for data in course_data:
@@ -208,7 +238,8 @@ if __name__ == '__main__':
     #generate_courses_sql()
     #generate_students_sql()
 
-    #generate_advises_sql()
+    generate_advises_sql()
     #generate_students_major_sql()
     #generate_prereq_sql()
-    generate_section_sql()
+    #generate_section_sql()
+

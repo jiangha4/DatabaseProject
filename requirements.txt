@@ -1,3 +1,11 @@
 requests
+pandas
 flask
 flask_restplus
+psycopg2
+sqlalchemy
+flask_sqlalchemy
+flask_migrate
+flask_script
+
+

@@ -1,15 +1,14 @@
 from flask import Flask, Blueprint
 from api.restplus import api
-from api.endpoints.routes import ns, ns2
 import settings
-
-from statics.models.database import myDB
-USERNAME = "s19wdb18"
-PASSWORD = "w8$t5yquKu"
-DATABASE = "s19wdb18"
-HOSTNAME = "dbclass.cs.pdx.edu"
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/project4'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+from api.endpoints.routes import ns, ns_input, ns_stored
 
 def configure(flask_app):
     flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
@@ -21,21 +20,17 @@ def configure(flask_app):
 def init_app(flask_app):
     configure(flask_app)
     blueprint = Blueprint('/', __name__)
-    #db = myDB(hostname=HOSTNAME,
-    #          username=USERNAME,
-    #          password=PASSWORD,
-    #          database=DATABASE)
-
     api.init_app(blueprint)
     api.add_namespace(ns)
-    #api.add_namespace(db)
-
+    api.add_namespace(ns_input)
+    api.add_namespace(ns_stored)
     flask_app.register_blueprint(blueprint)
 
-def main():
+def create_app():
     init_app(app)
-    #log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))
     app.run(debug=settings.FLASK_DEBUG)
 
 if __name__ == '__main__':
-    main()
+    create_app()
+
+
